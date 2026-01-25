@@ -101,7 +101,7 @@ const ServiceCard: React.FC<{
           ))}
         </div>
 
-        <Link to={service.id}>
+        <Link to={`/services/${service.id}`}>
           <button className="w-full flex items-center justify-between p-4 px-6 rounded-xl border border-mint/40 dark:border-mint/20 hover:bg-primary/10 dark:hover:bg-mint/10 transition-all group/btn">
             <span className="text-lg font-bold text-[#14b8a6] dark:text-mint">
               Learn More
