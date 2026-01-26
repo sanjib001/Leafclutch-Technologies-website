@@ -68,7 +68,14 @@ const AboutFounders: React.FC = () => {
                 Founder | Director | CTO
               </p>
               <div className="flex space-x-5">
-                <Mail className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
+                <a
+                  href="mailto:info@leafclutchtech.com.np"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Email me"
+                >
+                  <Mail className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
+                </a>
                 <a
                   href="https://linkedin.com/in/siddharthapathak"
                   target="_blank"
@@ -114,13 +121,28 @@ const AboutFounders: React.FC = () => {
                 Co-Founder | CEO
               </p>
               <div className="flex space-x-5">
-                <Mail className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
+                <a
+                  href="mailto:subhamleafclutch@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Email me"
+                >
+                  <Mail className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
+                </a>
+
                 <a
                   href="https://www.linkedin.com/in/shubham-kumar-deo-7048ab29b/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <Linkedin className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
+                </a>
+                <a
+                  href="https://project-shubhamportfolio11.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Globe className="w-5 h-5 text-accent cursor-pointer hover:scale-110 transition-transform" />
                 </a>
               </div>
             </motion.div>
