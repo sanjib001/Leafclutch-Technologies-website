@@ -47,7 +47,7 @@ const CTA: React.FC = () => {
             a free consultation with our experts.
           </p>
           <div className="flex flex-wrap gap-5 pt-4">
-            <Link to="/others/contact">
+            <Link to="/contact">
               <motion.button
                 className="text-[1.2rem] px-10 py-4 bg-white text-[#0A192F] font-extrabold rounded-full flex justify-center items-center space-x-3 hover:scale-105 transition-all shadow-xl"
                 whileHover={{ scale: 1.05 }}

@@ -39,13 +39,13 @@ const Hero: React.FC<HeroProps> = ({
       <div className="container-custom relative z-10 text-center text-white">
         <div className="animate-fade-in-up">
           {/* Floating Icon Card */}
-          <div className="inline-flex items-center justify-center p-5 glass-card rounded-3xl mb-8 border-white/30 animate-float shadow-2xl">
+          <div className="inline-flex items-center justify-center p-5  rounded-3xl mb-8 border-white/30 animate-float shadow-2xl">
             {icon}
           </div>
 
           {/* Elegant Subtitle */}
           <div className="flex justify-center mb-1">
-            <span className="flex items-center px-4 py-2 rounded-full glass-card border-white/20 text-xs md:text-sm font-bold tracking-widest uppercase text-mint text-glow">
+            <span className="flex items-center px-4 py-2 rounded-full  border-white/20 text-xs md:text-sm font-bold tracking-widest uppercase text-mint text-glow">
               {/* <Sparkles className="w-4 h-4 mr-2" /> */}
               {subtitle}
             </span>
@@ -63,7 +63,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* High-Impact CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link to="/others/contact">
+            <Link to="/contact">
               <button className="relative group w-full sm:w-auto px-10 py-4 bg-white hover:bg-[#ccc] text-primary dark:text-blue-950 font-bold rounded-2xl transition-all flex items-center justify-center overflow-hidden">
                 <span className="relative z-10 flex items-center">
                   Get Started

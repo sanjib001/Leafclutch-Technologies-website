@@ -5,8 +5,10 @@ import {
   X,
   ChevronDown,
   // Sun, Moon
+  MessageSquare
 } from "lucide-react";
 import { LuCircleUserRound } from "react-icons/lu";
+// import { FaRegMessage } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../ui/button";
 import {
@@ -30,7 +32,7 @@ const others = [
   { name: "Blog", href: "/others/blog" },
   { name: "Verify Certificate", href: "/others/verify-certificate" },
   { name: "Our Projects", href: "/others/our-projects" },
-  { name: "Contact Us", href: "/others/contact" },
+  
 ];
 
 // const services = [
@@ -125,7 +127,7 @@ export function Navbar() {
           </Link>
 
           {/* -------- Desktop Navigation -------- */}
-          <div className="hidden lg:flex items-center lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[2vw] ">
+          <div className="hidden lg:flex items-center lg:text-xs min-[1150px]:text-sm  lg:gap-[0vw] min-[1095px]:gap-[0.5vw] min-[1150px]:gap-[1vw] min-[1355px]:text-base min-[1355px]:gap-[2vw] ">
             {navLinks.map((link) =>
               link.dropdown ? (
                 <div
@@ -222,24 +224,35 @@ export function Navbar() {
                 )}
               </AnimatePresence>
             </Button> */}
-            <div className="hidden lg:flex">
-              {/* <Button asChild>
-                <Link to="/login">
-                  <LuCircleUserRound className="!w-6 !h-6" /> Login
+            <div className="hidden lg:flex space-x-2 items-center">
+             
+                <Link
+                 to="/contact"
+                onClick={() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="flex items-center "
+                >
+              <Button  variant="outline" className="xl:!h-12 md:!h-10 lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[0.5vw]">
+                  <MessageSquare className="xl:!w-6 xl:!h-6 md:!w-5 md:!h-5" />
+                  Contact
+              </Button>
                 </Link>
-              </Button> */}
-              <Button asChild className="!h-12">
+
+
                 <a
                   href="https://leafclutch-dashboard.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-[1rem]"
+                  className="flex items-center lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[0.5vw]"
                 >
-                  <LuCircleUserRound className="!w-7 !h-7" />
+              <Button className="xl:!h-12 md:!h-10 lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[0.5vw]">
+                  <LuCircleUserRound className="xl:!w-7 xl:!h-7 md:!w-6 md:!h-6" />
                   Login
-                </a>
               </Button>
+                </a>
+
             </div>
 
             {/* Mobile toggle */}
@@ -302,6 +315,7 @@ export function Navbar() {
                           onClick={() =>
                             setOpenDropdown(open ? null : link.name)
                           }
+                         
                         >
                           <span>{link.name}</span>
                           <ChevronDown
@@ -314,7 +328,11 @@ export function Navbar() {
                         <Link
                           to={link.href}
                           className="flex w-full items-center rounded-md px-3 py-2 text-base font-medium active:scale-[0.98]"
-                          onClick={() => setMobileMenuOpen(false)}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
                         >
                           {link.name}
                         </Link>
@@ -328,7 +346,11 @@ export function Navbar() {
                               key={item.name}
                               to={item.href}
                               className="rounded-md px-3 py-2 text-sm text-muted-foreground active:bg-muted"
-                              onClick={() => setMobileMenuOpen(false)}
+                               onClick={() => {
+                            setMobileMenuOpen(false);
+                            setOpenDropdown(open ? null : link.name)
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
                             >
                               {item.name}
                             </Link>
@@ -350,6 +372,19 @@ export function Navbar() {
                       <LuCircleUserRound className="!w-5 !h-5" /> Login
                     </Link>
                   </Button> */}
+                  <Button asChild>
+                    <Link
+                      to="/contact"
+                       onClick={() => {
+                            setMobileMenuOpen(false);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                      className="flex items-center gap-2"
+                    >
+                      <MessageSquare className="!w-5 !h-5" />
+                      Contact
+                    </Link>
+                  </Button>
                   <Button asChild>
                     <a
                       href="https://leafclutch-dashboard.vercel.app/"

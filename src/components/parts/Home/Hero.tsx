@@ -87,7 +87,7 @@ const Hero: React.FC = () => {
 
           {/* Buttons */}
           <motion.div className="flex flex-wrap gap-6 pt-4" variants={fadeInUp}>
-            <Link to="/others/contact">
+            <Link to="/contact">
               <motion.button
                 className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold flex justify-center items-center space-x-3 hover:opacity-90 transition-all transform hover:-translate-y-1 active:scale-95"
                 whileHover={{ scale: 1.05 }}

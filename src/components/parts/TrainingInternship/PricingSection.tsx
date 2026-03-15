@@ -249,7 +249,7 @@ const PricingSection: React.FC = () => {
                           <Tag className="w-4 h-4" />
                           <span className="text-sm font-black italic">
                             Enroll with just NPR{" "}
-                             {formatPrice(train.enroll_from_price)}
+                            {formatPrice(train.enroll_from_price)}
                           </span>
                         </div>
                       </div>
@@ -300,7 +300,7 @@ const PricingSection: React.FC = () => {
                       </button>
                     </Link>
                     {/* Full Width Button */}
-                    <a
+                    {/* <a
                       href="https://docs.google.com/forms/d/e/1FAIpQLSehIqCJm6ITkjUJcu9djYG4H60Uku61Z4Wlg_naCjTLUTjqlQ/viewform?usp=sharing&ouid=102811312275506082295"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -308,7 +308,15 @@ const PricingSection: React.FC = () => {
                       <button className="w-full py-5 bg-primary text-white dark:text-white font-bold text-lg rounded-2xl hover:bg-mint hover:text-primary transition-all shadow-lg active:scale-[0.98]">
                         Enroll Now
                       </button>
-                    </a>
+                    </a> */}
+                    <Link
+                      to="/course/form"
+                
+                    >
+                      <button className="w-full py-5 bg-primary text-white dark:text-white font-bold text-lg rounded-2xl hover:bg-mint hover:text-primary transition-all shadow-lg active:scale-[0.98]">
+                        Enroll Now
+                      </button>
+                    </Link>
                   </div>
                 </div>
               ))}
