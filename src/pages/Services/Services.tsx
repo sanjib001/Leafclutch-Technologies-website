@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Shield, Clock, Zap, Settings } from "lucide-react";
+import { Shield} from "lucide-react";
 import Spinner from "../../components/ui/Spinner";
 
 import {
   serviceApi,
   type ServiceResponse,
 } from "../../services/serviceService";
+import { services as STATIC_SERVICES } from "../../components/parts/Services/data";
 import NotFound from "../../components/ui/NotFound";
 import Hero from "../../components/parts/Services/Hero";
 import Features from "../../components/parts/Services/Features";
@@ -14,14 +15,19 @@ import Benefits from "../../components/parts/Services/Benefits";
 import Technologies from "../../components/parts/Services/Technologies";
 import FinalCTA from "../../components/parts/Services/FinalCTA";
 
+// Updated Interface to match ReactNode expectations
 interface MappedService {
   title: string;
   subtitle: string;
-  icon: string | null;
+  icon: React.ReactNode | string | null;
   heroImage: string;
   backgroundSize: string;
   features: string[];
-  benefits: { title: string; description: string; icon: React.ReactElement }[];
+  benefits: { 
+    title: string; 
+    description: string; 
+    icon: React.ReactNode // Changed from ReactElement to ReactNode
+  }[];
   technologies: string[];
 }
 
@@ -37,51 +43,56 @@ export default function Services() {
         return;
       }
 
+      setLoading(true);
+
+      // 1. CHECK STATIC CONSTANTS FIRST (Key-based lookup)
+      const staticData = STATIC_SERVICES[slug as keyof typeof STATIC_SERVICES];
+
+      if (staticData) {
+        setService({
+          title: staticData.title,
+          subtitle: staticData.subtitle,
+          icon: staticData.icon,
+          heroImage: staticData.heroImage,
+          backgroundSize: staticData.backgroundSize || "cover",
+          features: staticData.features,
+          technologies: staticData.technologies,
+          // Map to ensure icons are never undefined (Fixes the TS Error)
+          benefits: staticData.benefits.map((b) => ({
+            title: b.title,
+            description: b.description,
+            icon: b.icon || <Shield className="w-6 h-6" />, 
+          })),
+        });
+        setLoading(false);
+        return; 
+      }
+
+      // 2. FALLBACK TO API (If slug is an ID)
       try {
-        setLoading(true);
         const data: ServiceResponse = await serviceApi.getById(slug);
 
         if (data) {
-          const mappedData: MappedService = {
+          setService({
             title: data.title,
-            // subtitle: data.description,
-            subtitle: "",
+            subtitle: "", 
             icon: null,
             heroImage: data.photo_url || "/default-hero.jpg",
             backgroundSize: "cover",
             features: data.offerings || [],
             technologies: data.techs || [],
-            benefits: [
-              {
-                title: "Scalable Architecture",
-                description:
-                  "Build solutions that grow alongside your business without friction.",
-                icon: <Zap className="w-6 h-6" />,
-              },
-              {
-                title: "24/7 Support",
-                description:
-                  "Our technical experts are always available to keep you running.",
-                icon: <Clock className="w-6 h-6" />,
-              },
-              {
-                title: "Expert Implementation",
-                description:
-                  "Senior developers ensuring every line of code meets industry standards.",
-                icon: <Settings className="w-6 h-6" />,
-              },
-              {
-                title: "Security First",
-                description:
-                  "Top-tier data protection and compliance built into every module.",
-                icon: <Shield className="w-6 h-6" />,
-              },
-            ],
-          };
-          setService(mappedData);
+            // Fallback benefits from a static entry to maintain UI quality
+            benefits: STATIC_SERVICES["web-development"].benefits.map((b) => ({
+              title: b.title,
+              description: b.description,
+              icon: b.icon || <Shield className="w-6 h-6" />,
+            })),
+          });
+        } else {
+          setService(null);
         }
       } catch (err) {
-        console.error("Service fetch failed for slug:", slug, err);
+        console.error("Service fetch failed for slug/id:", slug, err);
         setService(null);
       } finally {
         setLoading(false);
@@ -94,9 +105,6 @@ export default function Services() {
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
-        {/* <div className="animate-pulse text-lg font-bold text-primary">
-          Fetching service data...
-        </div> */}
         <Spinner />
       </div>
     );

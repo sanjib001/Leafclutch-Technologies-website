@@ -128,29 +128,37 @@ const AboutTeam: React.FC = () => {
         </motion.div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.6, ease: easeOut },
-        }}
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <Link to="/intern-details">
+     <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easeOut },
+  }}
+  viewport={{ once: true, amount: 0.2 }}
+  // className="grid grid-cols-1 min-[900px]:grid-cols-2 gap-6 max-w-5xl mx-auto justify-center"
+>
+  {/* <Link to="/intern-details">
+    <button className="w-full h-16 bg-primary text-white font-bold rounded-full hover:scale-105 transition-all flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-base">
+      <span>Our Intern Team</span>
+      <ArrowRight className="w-5 h-5" />
+    </button>
+  </Link> */}
+    <Link to="/intern-details">
           <button className="px-12 py-5 bg-primary text-white font-bold rounded-full hover:scale-105 transition-all flex items-center mx-auto space-x-3 uppercase tracking-[0.2em] text-base">
             <span>Our Intern Team</span>
             <ArrowRight className="w-5 h-5" />
           </button>
-        </Link>
+    </Link>
 
-         <Link to="/mentor-details">
-          <button className="w-full h-16 bg-primary text-white font-bold rounded-full hover:scale-105 transition-all flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-base">
-            <span>Our Mentor Team</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
-         </Link>
-      </motion.div>
+  {/* <Link to="/mentor-details">
+    <button className="w-full h-16 bg-primary text-white font-bold rounded-full hover:scale-105 transition-all flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-base">
+      <span>Our Mentor Team</span>
+      <ArrowRight className="w-5 h-5" />
+    </button>
+  </Link> */}
+
+</motion.div>
     </section>
   );
 };

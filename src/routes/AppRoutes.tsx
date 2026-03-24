@@ -18,6 +18,8 @@ import InternshipDetails from "../components/parts/AboutUs/InternDetails";
 import CourseDetailPage from "../pages/CourseDetailPage";
 import MentorDetails from "../components/parts/AboutUs/MentorDetails";
 import Form from "../pages/form/form";
+import PrivacyPolicy from "../pages/Privacy";
+import TermsOfService from "../pages/Terms";
 
 export default function AppRoutes() {
   return (
@@ -44,6 +46,8 @@ export default function AppRoutes() {
           <Route path="/services/all-services" element={<AllServices />} />
 
           <Route path="/services/:slug" element={<Services />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
