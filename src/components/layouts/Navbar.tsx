@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, MessageSquare } from "lucide-react";
-import { LuCircleUserRound } from "react-icons/lu";
+// import { LuCircleUserRound } from "react-icons/lu";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../ui/button";
 import { serviceApi } from "../../services/serviceService";
@@ -205,10 +205,10 @@ export function Navbar() {
                 rel="noopener noreferrer"
                 className="flex items-center"
               >
-                <Button className="xl:!h-12 md:!h-10 lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[0.5vw]">
+                {/* <Button className="xl:!h-12 md:!h-10 lg:text-xs min-[1200px]:text-sm lg:gap-[1vw] xl:text-base xl:gap-[0.5vw]">
                   <LuCircleUserRound className="xl:!w-7 xl:!h-7 md:!w-6 md:!h-6" />
                   Login
-                </Button>
+                </Button> */}
               </a>
             </div>
 
