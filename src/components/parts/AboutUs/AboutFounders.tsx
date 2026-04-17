@@ -56,13 +56,13 @@ const AboutFounders: React.FC = () => {
             >
               <img
                 src="https://i.postimg.cc/jdb4dkY2/siddhartha.jpg"
-                alt="Siddhartha Pathak"
+                alt="Er. Siddhartha Pathak"
                 className="w-full h-full object-cover"
               />
             </motion.div>
             <motion.div className="space-y-4 px-2" variants={staggerContainer}>
               <h3 className="text-2xl font-bold text-primary dark:text-white">
-                Siddhartha Pathak
+                Er. Siddhartha Pathak
               </h3>
               <p className="text-muted-foreground font-medium">
                 Founder | Director | CTO
