@@ -131,6 +131,24 @@ export default function Mentors() {
 
   useEffect(() => { fetchMentors(); }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-mentors')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'mentors' }, payload => {
+        if (payload.eventType === 'INSERT') {
+          const m = payload.new as Mentor;
+          setMentors(prev => prev.some(x => x.id === m.id) ? prev : [...prev, m]);
+        } else if (payload.eventType === 'UPDATE') {
+          setMentors(prev => prev.map(x => x.id === payload.new.id ? payload.new as Mentor : x));
+        } else if (payload.eventType === 'DELETE') {
+          const id = (payload.old as { id: string }).id;
+          setMentors(prev => prev.filter(x => x.id !== id));
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   async function handleDelete() {
     if (!deleteTarget) return;
     const target = deleteTarget;

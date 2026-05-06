@@ -173,6 +173,24 @@ export default function Opportunities() {
 
   useEffect(() => { fetchItems(); }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-opportunities')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'opportunities' }, payload => {
+        if (payload.eventType === 'INSERT') {
+          const o = payload.new as Opportunity;
+          setItems(prev => prev.some(x => x.id === o.id) ? prev : [...prev, o]);
+        } else if (payload.eventType === 'UPDATE') {
+          setItems(prev => prev.map(x => x.id === payload.new.id ? payload.new as Opportunity : x));
+        } else if (payload.eventType === 'DELETE') {
+          const id = (payload.old as { id: string }).id;
+          setItems(prev => prev.filter(x => x.id !== id));
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   const filtered = filter === "ALL" ? items : items.filter(i => i.type === filter);
 
   async function handleDelete() {

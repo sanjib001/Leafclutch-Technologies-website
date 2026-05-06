@@ -47,6 +47,24 @@ export default function Contacts() {
 
   useEffect(() => { fetchSubmissions(); }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-contacts')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_submissions' }, payload => {
+        if (payload.eventType === 'INSERT') {
+          const s = payload.new as Submission;
+          setSubmissions(prev => prev.some(x => x.id === s.id) ? prev : [s, ...prev]);
+        } else if (payload.eventType === 'UPDATE') {
+          setSubmissions(prev => prev.map(x => x.id === payload.new.id ? payload.new as Submission : x));
+        } else if (payload.eventType === 'DELETE') {
+          const id = (payload.old as { id: string }).id;
+          setSubmissions(prev => prev.filter(x => x.id !== id));
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   function updateStatus(id: string, status: string) {
     const typedStatus = status as Submission["status"];
     setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status: typedStatus } : s));

@@ -150,6 +150,24 @@ export default function Projects() {
 
   useEffect(() => { fetchProjects(); }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-projects')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, payload => {
+        if (payload.eventType === 'INSERT') {
+          const p = payload.new as Project;
+          setProjects(prev => prev.some(x => x.id === p.id) ? prev : [...prev, p]);
+        } else if (payload.eventType === 'UPDATE') {
+          setProjects(prev => prev.map(x => x.id === payload.new.id ? payload.new as Project : x));
+        } else if (payload.eventType === 'DELETE') {
+          const id = (payload.old as { id: string }).id;
+          setProjects(prev => prev.filter(x => x.id !== id));
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   async function handleDelete() {
     if (!deleteTarget) return;
     const target = deleteTarget;

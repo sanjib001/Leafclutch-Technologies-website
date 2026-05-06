@@ -193,6 +193,24 @@ export default function AdminServices() {
 
   useEffect(() => { fetchServices(); }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-services')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'services' }, payload => {
+        if (payload.eventType === 'INSERT') {
+          const s = payload.new as Service;
+          setServices(prev => prev.some(x => x.id === s.id) ? prev : [...prev, s]);
+        } else if (payload.eventType === 'UPDATE') {
+          setServices(prev => prev.map(x => x.id === payload.new.id ? payload.new as Service : x));
+        } else if (payload.eventType === 'DELETE') {
+          const id = (payload.old as { id: string }).id;
+          setServices(prev => prev.filter(x => x.id !== id));
+        }
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   async function handleDelete() {
     if (!deleteTarget) return;
     const target = deleteTarget;

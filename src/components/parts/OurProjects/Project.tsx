@@ -9,6 +9,8 @@ import {
   type ProjectResponse,
 } from "../../../services/projectService";
 import ProjectsSkeleton from "./ProjectsSkeleton";
+import { supabase } from "../../../lib/supabase";
+import { cacheInvalidate } from "../../../lib/cache";
 
 const Projects = () => {
   const [dbProjects, setDbProjects] = useState<ProjectResponse[]>([]);
@@ -28,6 +30,17 @@ const Projects = () => {
       }
     };
     fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('rt-public-projects')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, () => {
+        cacheInvalidate('projects:all');
+        projectApi.getAll().then(data => setDbProjects(data));
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   return (
