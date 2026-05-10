@@ -269,7 +269,7 @@ export function Footer() {
               Terms of Service
             </Link>
             <a
-              href="https://leafclutchtechnologies.com.np/admin/"
+              href="https://leafclutch-technologies-website.vercel.app/admin/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-primary"
