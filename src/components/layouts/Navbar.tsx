@@ -290,6 +290,22 @@ export function Navbar() {
                     </div>
                   );
                 })}
+
+                {/* Mobile-only Contact CTA (missing vs desktop) */}
+                <Link
+                  to="/contact"
+                  className="mt-2 flex items-center"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setOpenDropdown(null);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  <Button variant="outline" className="w-full justify-center gap-2">
+                    <MessageSquare className="h-5 w-5" />
+                    Contact
+                  </Button>
+                </Link>
               </div>
             </div>
           </motion.div>
