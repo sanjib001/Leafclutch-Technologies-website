@@ -29,42 +29,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    let mounted = true;
     const sessionTimeout = new Promise<{ data: { session: null } }>((resolve) =>
       setTimeout(() => resolve({ data: { session: null } }), 12_000)
     );
-    Promise.race([supabase.auth.getSession(), sessionTimeout]).then(async ({ data: { session } }) => {
+    Promise.race([supabase.auth.getSession(), sessionTimeout]).then(({ data: { session } }) => {
+      if (!mounted) return;
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) {
-        setIsAdmin(await checkAdmin(session.user.id));
-      }
       setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
+        // IMPORTANT: Avoid any async Supabase calls inside this handler.
+        // Some supabase-js versions can deadlock if you do DB calls here, which then makes
+        // the next Supabase call (e.g. a second login) hang.
+        if (!mounted) return;
         setSession(session);
         setUser(session?.user ?? null);
-        if (session?.user) {
-          setIsAdmin(await checkAdmin(session.user.id));
-        } else {
-          setIsAdmin(false);
-        }
         setLoading(false);
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
+  useEffect(() => {
+    let ignore = false;
+
+    async function resolveAdmin() {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+      try {
+        const admin = await checkAdmin(user.id);
+        if (!ignore) setIsAdmin(admin);
+      } catch {
+        if (!ignore) setIsAdmin(false);
+      }
+    }
+
+    resolveAdmin();
+    return () => { ignore = true; };
+  }, [user?.id]);
+
   async function signIn(email: string, password: string) {
-    const timeout = new Promise<{ data: { user: null }; error: { message: string } }>(resolve =>
-      setTimeout(() => resolve({ data: { user: null }, error: { message: "Sign-in timed out. Please try again." } }), 12_000)
-    );
-    const { data, error } = await Promise.race([
-      supabase.auth.signInWithPassword({ email, password }),
-      timeout,
-    ]);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: error.message };
     if (data.user) {
       const admin = await checkAdmin(data.user.id);
@@ -72,12 +87,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await supabase.auth.signOut();
         return { error: "Access denied. Not an admin." };
       }
+      setIsAdmin(true);
     }
     return { error: null };
   }
 
   async function signOut() {
     await supabase.auth.signOut();
+    setIsAdmin(false);
   }
 
   return (

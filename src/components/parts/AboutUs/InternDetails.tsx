@@ -6,6 +6,8 @@ import {
   type MemberResponse,
 } from "../../../services/memberService";
 import InternsSkeleton from "./InternSkeleton";
+import { cacheInvalidate } from "../../../lib/cache";
+import { onTableChange } from "../../../lib/realtime";
 
 const fadeIn: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -50,6 +52,18 @@ const InternshipDetails: React.FC = () => {
       }
     };
     fetchInterns();
+  }, []);
+
+  useEffect(() => {
+    return onTableChange("members", () => {
+      cacheInvalidate("members:interns");
+      memberApi.getInterns().then((data) => {
+        const sorted = [...data].sort(
+          (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+        );
+        setInterns(sorted.filter((m) => m.is_visible));
+      });
+    });
   }, []);
 
   return (
